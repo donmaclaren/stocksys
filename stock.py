@@ -21,16 +21,6 @@ def close_connection(exception):
         db.close()
 
 
-#global conn, cursor
-#conn = sqlite3.connect("stockman.db")
-
-#conn.row_factory = lamda cursor, row: row[0]
-#cursor = conn.cursor()
-
-
-
-
-
 
 class SearchForm(Form):
     autocomp = TextField('Select Part No', id='parts_autocomplete')
@@ -42,6 +32,7 @@ class SearchForm(Form):
 def autocomplete():
     cur = get_db().cursor()  
     pnums = cur.execute("SELECT PART_NO FROM `parts`;").fetchall()
+    print(pnums)
     COLUMN = 0
     parts=[elt[COLUMN] for elt in pnums]
     return Response(json.dumps(parts), mimetype='application/json')
