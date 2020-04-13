@@ -3,6 +3,7 @@ import json
 from wtforms import TextField,Form,SubmitField
 import sqlite3
 import string
+from forms import AddPart,SearchForm
 
 app = Flask(__name__)
 
@@ -23,9 +24,6 @@ def close_connection(exception):
 
 
 
-class SearchForm(Form):
-    autocomp = TextField('Select Part No', id='parts_autocomplete')
-    submit = SubmitField('Select')
 
 
 
@@ -61,7 +59,8 @@ def removepart():
     
 @app.route('/addpart')
 def addpart():
-    return render_template("prt_add.html")
+    form = AddPart(request.form)
+    return render_template("prt_add.html",form=form)
 
 @app.route('/suppliers')
 def suppliers():

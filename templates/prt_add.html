@@ -8,6 +8,16 @@
 </head>
 <body>
     <h1>Add Part</h1>
-
+    {% for field in form %}
+        <tr>
+        {% if field.type == "SubmitField" %}
+            <td>{{ field }}</td><br>
+        {% else %}
+            <td>{{ field.label }}<br>{{ field }}</td><br>
+        {% endif %}
+        </tr>
+        
+    {% endfor %}
+ <!--   {{ form.part_no.label }}: {{ form.part_no }} {{form.submit()}}-->
 </body>
 {% endblock %}
