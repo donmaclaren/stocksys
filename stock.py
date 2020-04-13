@@ -28,13 +28,13 @@ class SearchForm(Form):
 
 
 
-@app.route('/_autocomplete', methods=['GET'])
+@app.route('/autocomplete', methods=['GET'])
 def autocomplete():
     cur = get_db().cursor()  
     pnums = cur.execute("SELECT PART_NO FROM `parts`;").fetchall()
     print(pnums)
     COLUMN = 0
-    parts=[elt[COLUMN] for elt in pnums]
+    parts=[prt[COLUMN] for prt in pnums]
     return Response(json.dumps(parts), mimetype='application/json')
 
 

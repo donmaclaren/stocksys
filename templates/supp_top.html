@@ -1,0 +1,11 @@
+{% extends "side.html" %}
+{% block rightside %}
+	<body>
+		<div>Suppliers: 
+		<a href="/suppliers" style="display:inline-block">Search </a>
+		<a href="/add_supp" style="display:inline-block">Add</a>
+		<a href="/rem_supp" style="display:inline-block">Remove</a></div>
+		<hr>
+		{% block content %}{% endblock %}
+	</body>
+{% endblock %}

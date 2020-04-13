@@ -1,0 +1,3 @@
+                    select: function(event, ui){
+                        $('#parts_autocomplete').val(ui.item.value);
+                        $('#parts_autocomplete').submit();}

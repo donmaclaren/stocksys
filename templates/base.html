@@ -1,12 +1,11 @@
-<html>
-	<head>
-		<title>Asper</title>
-	</head>
+{% extends "side.html" %}
+{% block rightside %}
 	<body>
-		<div>Menu: 
-		<a href="/index" style="display:inline-block">Home </a>
-		<a href="/" style="display:inline-block">Search</a></div>
+		<div>Parts: 
+		<a href="/index" style="display:inline-block">Search </a>
+		<a href="/" style="display:inline-block">Add</a>
+		<a href="/" style="display:inline-block">Remove</a></div>
 		<hr>
 		{% block content %}{% endblock %}
 	</body>
-</html>
+{% endblock %}

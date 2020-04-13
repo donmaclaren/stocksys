@@ -1,0 +1,11 @@
+{% extends "side.html" %}
+{% block rightside %}
+	<body>
+		<div>Parts: 
+		<a href="/parts" style="display:inline-block">Search </a>
+		<a href="/addpart" style="display:inline-block">Add</a>
+		<a href="/removepart" style="display:inline-block">Remove</a></div>
+		<hr>
+		{% block content %}{% endblock %}
+	</body>
+{% endblock %}
