@@ -29,7 +29,16 @@ long_line_column=72
 
 [files]
 current_page=0
-FILE_NAME_0=0;Python;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2Fcode%2Fstocksys%2Fstock.py;0;2
+FILE_NAME_0=2688;Python;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2Fcode%2Fstocksys%2Fstock01.py;0;2
+FILE_NAME_1=1257;Python;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2Fcode%2Fstocksys%2Fforms.py;0;4
+FILE_NAME_2=21;HTML;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2Fcode%2Fstocksys%2Ftemplates%2Fprt_show.html;0;3
+FILE_NAME_3=45;HTML;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2Fcode%2Fstocksys%2Ftemplates%2Fboms.html;0;3
+FILE_NAME_4=412;HTML;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2Fcode%2Fstocksys%2Ftemplates%2Fprt_remove.html;0;4
+FILE_NAME_5=67;HTML;0;EUTF-8;1;1;0;%2Fhome%2Fpi%2Fcode%2Fstocksys%2Ftemplates%2Fbom_top.html;0;4
+FILE_NAME_6=832;HTML;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2Fcode%2Fstocksys%2Ftemplates%2Fprt_search.html;0;4
+FILE_NAME_7=0;HTML;0;EUTF-8;1;1;0;%2Fhome%2Fpi%2Fcode%2Fstocksys%2Ftemplates%2Fsupp_top.html;0;4
+FILE_NAME_8=1044;HTML;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2Fcode%2Fstocksys%2Ftemplates%2Fprt_add.html;0;4
+FILE_NAME_9=0;HTML;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2Fcode%2Fstocksys%2Ftemplates%2Fside.html;0;2
 
 [VTE]
 last_dir=/home/pi

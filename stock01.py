@@ -22,15 +22,47 @@ def close_connection(exception):
     if db is not None:
         db.close()
 
+@app.route('/autocomplete_supp', methods=['GET'])
+def autocomplete_supp():
+    cur = get_db().cursor()  
+    pnums = cur.execute("SELECT COMPANY FROM `companys`;").fetchall()
+    print(pnums)
+    COLUMN = 0
+    parts = []
+    for prt in pnums:
+      if type(prt[COLUMN]) is str:
+        parts.append(prt[COLUMN])
+    return Response(json.dumps(parts), mimetype='application/json')
 
 
-
-
-
-@app.route('/autocomplete', methods=['GET'])
-def autocomplete():
+@app.route('/autocomplete_part', methods=['GET'])
+def autocomplete_part():
+    cur = get_db().cursor()  
+    pnums = cur.execute("SELECT PART_NO FROM `parts`;").fetchall()
+    print(pnums)
+    COLUMN = 0
+    parts = []
+    for prt in pnums:
+      if type(prt[COLUMN]) is str:
+        parts.append(prt[COLUMN])
+    return Response(json.dumps(parts), mimetype='application/json')
+    
+@app.route('/autocomplete_desc', methods=['GET'])
+def autocomplete_desc():
     cur = get_db().cursor()  
     pnums = cur.execute("SELECT DESCRIPTION FROM `parts`;").fetchall()
+    print(pnums)
+    COLUMN = 0
+    parts = []
+    for prt in pnums:
+      if type(prt[COLUMN]) is str:
+        parts.append(prt[COLUMN])
+    return Response(json.dumps(parts), mimetype='application/json')
+    
+@app.route('/autocomplete_code', methods=['GET'])
+def autocomplete_code():
+    cur = get_db().cursor()  
+    pnums = cur.execute("SELECT ORDER_CODE FROM `parts`;").fetchall()
     print(pnums)
     COLUMN = 0
     parts = []
@@ -46,20 +78,27 @@ def parts():
     if request.method == "POST":
         dat = form.autocomp.data
         print(dat)
+        dat1 = form.autocomp1.data
+        print(dat1)
+        dat2 = form.autocomp2.data
+        print(dat2)
         cur = get_db().cursor()
-        res = cur.execute(f"SELECT * FROM `parts` WHERE DESCRIPTION = '{dat}';").fetchone()         
+        res = cur.execute(f"SELECT * FROM `parts` WHERE PART_NO = '{dat}';").fetchone()         
 #        print(res)
         return render_template("prt_show.html", res=res[1:], form=form)
     return render_template("prt_search.html", form=form)
+
 
 @app.route('/removepart')
 def removepart():
     return render_template("prt_remove.html")
 
     
-@app.route('/addpart')
+@app.route('/addpart', methods=['GET', 'POST'])
 def addpart():
     form = AddPart(request.form)
+    if request.method == "POST":
+        return("DONE!")
     return render_template("prt_add.html",form=form)
 
 @app.route('/suppliers')
@@ -92,4 +131,4 @@ def index():
     return render_template("main.html")
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False )
+    app.run(host='0.0.0.0', port=5007, debug=True, use_reloader=False )

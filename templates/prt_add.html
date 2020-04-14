@@ -8,6 +8,7 @@
 </head>
 <body>
     <h1>Add Part</h1>
+    <form method="POST" novalidate>
     {% for field in form %}
         <tr>
         {% if field.type == "SubmitField" %}
@@ -18,6 +19,23 @@
         </tr>
         
     {% endfor %}
- <!--   {{ form.part_no.label }}: {{ form.part_no }} {{form.submit()}}-->
+    </form>
+    
+ <script>
+    $(function() {
+        $.ajax({
+            url: '{{ url_for("autocomplete_supp") }}'
+            }).done(function (data){
+                $('#supp1_autocomplete').autocomplete({
+                    source: data,
+                    minLength: 2,
+                });
+                $('#supp2_autocomplete').autocomplete({
+                    source: data,
+                    minLength: 2,
+                });
+            });
+        });
+</script>
 </body>
 {% endblock %}

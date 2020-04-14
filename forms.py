@@ -8,14 +8,16 @@ class EmailPasswordForm(Form):
     password = PasswordField('Password', validators=[DataRequired()])
 
 class SearchForm(Form):
-    autocomp = TextField('Select Part No', id='parts_autocomplete')
+    autocomp = TextField('Part No', id='parts_autocomplete')
+    autocomp1 = TextField('Description', id='desc_autocomplete')
+    autocomp2 = TextField('Order Code', id='code_autocomplete')
     submit = SubmitField('Select')
 
 
 class AddPart(Form):
     part_no = StringField('PART No', validators=[DataRequired()])
     description = StringField('Description', validators=[DataRequired()])
-    supplier = StringField('Supplier', validators=[DataRequired()])
+    supplier = StringField('Supplier', id='supp1_autocomplete', validators=[DataRequired()])
     order_code = StringField('Order Code', validators=[DataRequired()])
     cost_price = StringField('Cost Price', validators=[DataRequired()])
     delivered_price = StringField('Delivered Price', validators=[DataRequired()])
@@ -23,6 +25,6 @@ class AddPart(Form):
     lead_time = StringField('Lead Time', validators=[DataRequired()])
     location = StringField('Location', validators=[DataRequired()])
     reorder_qty = StringField('Reorder Quantity', validators=[DataRequired()])
-    supplier2 = StringField('Supplier 2', validators=[DataRequired()])
+    supplier2 = StringField('Supplier 2', id='supp2_autocomplete', validators=[DataRequired()])
     order_code2 = StringField('Order Code 2', validators=[DataRequired()])
     submit = SubmitField('Add')

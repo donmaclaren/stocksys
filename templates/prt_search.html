@@ -8,7 +8,7 @@
 </head>
 <body>
 <form method="POST" novalidate>    
-{{ form.autocomp.label }}: {{ form.autocomp }} {{form.submit()}}
+{{ form.autocomp.label }}: {{ form.autocomp }} {{ form.autocomp1.label }}: {{ form.autocomp1 }} {{ form.autocomp2.label }}: {{ form.autocomp2 }} {{form.submit()}}
 </form>
 <hr>
 
@@ -16,9 +16,29 @@
 <script>
     $(function() {
         $.ajax({
-            url: '{{ url_for("autocomplete") }}'
+            url: '{{ url_for("autocomplete_part") }}'
             }).done(function (data){
                 $('#parts_autocomplete').autocomplete({
+                    source: data,
+                    minLength: 2,
+                });
+            });
+        });
+    $(function() {
+        $.ajax({
+            url: '{{ url_for("autocomplete_desc") }}'
+            }).done(function (data){
+                $('#desc_autocomplete').autocomplete({
+                    source: data,
+                    minLength: 2,
+                });
+            });
+        });
+    $(function() {
+        $.ajax({
+            url: '{{ url_for("autocomplete_code") }}'
+            }).done(function (data){
+                $('#code_autocomplete').autocomplete({
                     source: data,
                     minLength: 2,
                 });
