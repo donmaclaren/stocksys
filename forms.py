@@ -11,7 +11,7 @@ class SearchForm(Form):
     autocomp = TextField('Part No', id='parts_autocomplete')
     autocomp1 = TextField('Description', id='desc_autocomplete')
     autocomp2 = TextField('Order Code', id='code_autocomplete')
-    submit = SubmitField('Select')
+    submit = SubmitField('Show')
 
 
 class AddPart(Form):
@@ -20,11 +20,12 @@ class AddPart(Form):
     supplier = StringField('Supplier', id='supp1_autocomplete', validators=[DataRequired()])
     order_code = StringField('Order Code', validators=[DataRequired()])
     cost_price = StringField('Cost Price', validators=[DataRequired()])
-    delivered_price = StringField('Delivered Price', validators=[DataRequired()])
+    delivered_price = StringField('Delivered Price')
     stock = StringField('Stock', validators=[DataRequired()])
-    lead_time = StringField('Lead Time', validators=[DataRequired()])
+    unit = StringField('Unit')
+    lead_time = StringField('Lead Time')
     location = StringField('Location', validators=[DataRequired()])
-    reorder_qty = StringField('Reorder Quantity', validators=[DataRequired()])
-    supplier2 = StringField('Supplier 2', id='supp2_autocomplete', validators=[DataRequired()])
-    order_code2 = StringField('Order Code 2', validators=[DataRequired()])
+    reorder_qty = StringField('Reorder Quantity')
+    supplier2 = StringField('Supplier 2', id='supp2_autocomplete')
+    order_code2 = StringField('Order Code 2')
     submit = SubmitField('Add')

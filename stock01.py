@@ -16,6 +16,21 @@ def get_db():
         db = g._database = sqlite3.connect(DATABASE)
     return db
 
+def add_part(data):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("INSERT INTO `parts` (PART_NO, DESCRIPTION, SUPPLIER, ORDER_CODE, COST_PRICE, DELIVERED_PRICE, STOCK,\
+                UNIT, LEADTIME, LOCATION, REORDER_QTY, OWNER, SUPPLIER2, ORDER_CODE2) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",data)
+    conn.commit()
+    return cur.lastrowid
+    
+def delete_part(part):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute(f"DELETE FROM 'parts' WHERE PART_NO = '{part}'")
+    conn.commit()
+#    return cur.lastrowid
+
 @app.teardown_appcontext
 def close_connection(exception):
     db = getattr(g, '_database', None)
@@ -83,21 +98,62 @@ def parts():
         dat2 = form.autocomp2.data
         print(dat2)
         cur = get_db().cursor()
-        res = cur.execute(f"SELECT * FROM `parts` WHERE PART_NO = '{dat}';").fetchone()         
+        if len(dat) > 2:
+          res = cur.execute(f"SELECT * FROM `parts` WHERE PART_NO = '{dat}';").fetchone() 
+        elif len(dat1) > 2:
+          res = cur.execute(f"SELECT * FROM `parts` WHERE DESCRIPTION = '{dat1}';").fetchone()
+        elif len(dat2) > 2:
+          res = cur.execute(f"SELECT * FROM `parts` WHERE ORDER_CODE = '{dat2}';").fetchone()
 #        print(res)
+        form = AddPart()
+#        form.part_no.data = res[1]
+        i = 1
+        for field in form:
+            if field.name == 'supplier' and len(res[i]) != 0:
+                 dat = res[i]
+                 field.data = cur.execute(f"SELECT COMPANY FROM `companys` WHERE COMP_NO = '{dat}';").fetchone()[0]
+            elif field.name == 'supplier2' and len(res[i]) != 0:
+                 dat = res[i]
+                 field.data = cur.execute(f"SELECT COMPANY FROM `companys` WHERE COMP_NO = '{dat}';").fetchone()[0]
+            else:
+                 field.data = res[i]
+            i += 1
         return render_template("prt_show.html", res=res[1:], form=form)
     return render_template("prt_search.html", form=form)
 
 
-@app.route('/removepart')
+@app.route('/savepart', methods=['GET', 'POST'])
+def savepart():
+    form = AddPart(request.form)
+    if request.method == "POST":    
+#        dat = form.part_no.data
+#        delete_part(dat)
+        return("SAVED!")
+    return render_template("prt_remove.html",form=form)
+
+
+
+@app.route('/removepart', methods=['GET', 'POST'])
 def removepart():
-    return render_template("prt_remove.html")
+    form = AddPart(request.form)
+    if request.method == "POST":    
+        dat = form.part_no.data
+        delete_part(dat)
+        return("DONE!")
+    return render_template("prt_remove.html",form=form)
 
     
 @app.route('/addpart', methods=['GET', 'POST'])
 def addpart():
     form = AddPart(request.form)
     if request.method == "POST":
+        dat = []
+        for field in form:
+          dat.append(field.data)
+        print(dat)
+        add_part(dat)
+#        cur = get_db().cursor()
+#        res = cur.execute(f"SELECT * FROM `parts` WHERE PART_NO = '{dat}';").fetchone()
         return("DONE!")
     return render_template("prt_add.html",form=form)
 
