@@ -109,10 +109,7 @@ def parts():
 #        form.part_no.data = res[1]
         i = 1
         for field in form:
-            if field.name == 'supplier' and len(res[i]) != 0:
-                 dat = res[i]
-                 field.data = cur.execute(f"SELECT COMPANY FROM `companys` WHERE COMP_NO = '{dat}';").fetchone()[0]
-            elif field.name == 'supplier2' and len(res[i]) != 0:
+            if 'supplier' in field.name  and len(res[i]) != 0:
                  dat = res[i]
                  field.data = cur.execute(f"SELECT COMPANY FROM `companys` WHERE COMP_NO = '{dat}';").fetchone()[0]
             else:
@@ -121,7 +118,7 @@ def parts():
         return render_template("prt_show.html", res=res[1:], form=form)
     return render_template("prt_search.html", form=form)
 
-
+# Save an edited part
 @app.route('/savepart', methods=['GET', 'POST'])
 def savepart():
     form = AddPart(request.form)
@@ -132,29 +129,32 @@ def savepart():
     return render_template("prt_remove.html",form=form)
 
 
-
+# Remove a part from db
 @app.route('/removepart', methods=['GET', 'POST'])
 def removepart():
     form = AddPart(request.form)
     if request.method == "POST":    
         dat = form.part_no.data
         delete_part(dat)
-        return("DONE!")
+        return render_template("prt_removed.html")
     return render_template("prt_remove.html",form=form)
 
-    
+# Add a new part    
 @app.route('/addpart', methods=['GET', 'POST'])
 def addpart():
     form = AddPart(request.form)
     if request.method == "POST":
+        cur = get_db().cursor()
         dat = []
         for field in form:
+          if 'supplier' in field.name  and len(field.data) != 0:
+            field.data = cur.execute(f"SELECT COMP_NO FROM `companys` WHERE COMPANY = '{field.data}';").fetchone()[0]
           dat.append(field.data)
         print(dat)
         add_part(dat)
 #        cur = get_db().cursor()
 #        res = cur.execute(f"SELECT * FROM `parts` WHERE PART_NO = '{dat}';").fetchone()
-        return("DONE!")
+        return render_template("prt_saved.html")
     return render_template("prt_add.html",form=form)
 
 @app.route('/suppliers')

@@ -29,7 +29,7 @@ long_line_column=72
 
 [files]
 current_page=0
-FILE_NAME_0=3882;Python;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2Fcode%2Fstocksys%2Fstock01.py;0;2
+FILE_NAME_0=4038;Python;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2Fcode%2Fstocksys%2Fstock01.py;0;2
 FILE_NAME_1=768;Python;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2Fcode%2Fstocksys%2Fforms.py;0;4
 FILE_NAME_2=254;HTML;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2Fcode%2Fstocksys%2Ftemplates%2Fprt_show.html;0;3
 FILE_NAME_3=45;HTML;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2Fcode%2Fstocksys%2Ftemplates%2Fboms.html;0;3
@@ -41,6 +41,7 @@ FILE_NAME_8=1224;HTML;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2Fcode%2Fstocksys%2Ftemplates%
 FILE_NAME_9=0;HTML;0;EUTF-8;0;1;0;%2Fhome%2Fpi%2Fcode%2Fstocksys%2Ftemplates%2Fside.html;0;2
 FILE_NAME_10=2906;Python;0;EUTF-8;1;1;0;%2Fhome%2Fpi%2Fcode%2Fstocksys%2Fcsv2sql03.py;0;4
 FILE_NAME_11=395;Python;0;EUTF-8;1;1;0;%2Fhome%2Fpi%2Fcode%2Fstocksys%2Fqueries.py;0;4
+FILE_NAME_12=17;HTML;0;EUTF-8;1;1;0;%2Fhome%2Fpi%2Fcode%2Fstocksys%2Ftemplates%2Fprt_saved.html;0;4
 
 [VTE]
 last_dir=/home/pi
