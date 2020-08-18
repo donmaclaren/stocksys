@@ -13,6 +13,11 @@ class SearchForm(Form):
     autocomp2 = TextField('Order Code', id='code_autocomplete')
     submit = SubmitField('Show')
 
+class BomForm(Form):
+    autocomp_bom = TextField('BOM', id='bom_autocomplete')
+    qty_bom = TextField('Quantity', id='bom_qty')    
+    submit = SubmitField('Save File')
+
 
 class AddPart(Form):
     part_no = StringField('PART No', validators=[DataRequired()])

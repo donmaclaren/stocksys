@@ -3,7 +3,9 @@ import json
 from wtforms import TextField,Form,SubmitField
 import sqlite3
 import string
-from forms import AddPart,SearchForm
+from forms import AddPart,SearchForm, BomForm
+import io
+import csv
 
 app = Flask(__name__)
 
@@ -49,6 +51,17 @@ def autocomplete_supp():
         parts.append(prt[COLUMN])
     return Response(json.dumps(parts), mimetype='application/json')
 
+@app.route('/autocomplete_bom', methods=['GET'])
+def autocomplete_bom():
+    cur = get_db().cursor()  
+    desc = cur.execute("SELECT DESCRIPTION FROM `bom_headers`;").fetchall()
+#    print(desc)
+    COLUMN = 0
+    boms = []
+    for ds in desc:
+      if type(ds[COLUMN]) is str:
+        boms.append(ds[COLUMN])
+    return Response(json.dumps(boms), mimetype='application/json')
 
 @app.route('/autocomplete_part', methods=['GET'])
 def autocomplete_part():
@@ -170,9 +183,63 @@ def rem_supp():
     return render_template("rem_supp.html")
 
     
-@app.route('/boms')
+@app.route('/boms', methods=['GET', 'POST'])
 def boms():
-    return render_template("boms.html")
+    form = BomForm(request.form)
+    if request.method == "POST":
+        dat = form.autocomp_bom.data
+        print(dat)
+        qty = form.qty_bom.data
+        print(qty)
+
+        cur = get_db().cursor()
+        if len(dat) > 2:
+          bom = cur.execute(f"SELECT * FROM `bom_headers` WHERE DESCRIPTION = '{dat}';").fetchone()
+          print(bom)
+          
+          bom_no = bom[0] 
+
+          try:
+              cur.execute(f"SELECT PART_NO, DESCRIPTION, QTY_USED, CCTLOC FROM `bom_items` WHERE BOM = '{bom_no}';")
+              result = cur.fetchall()
+              print(result)
+      
+              output = io.StringIO()
+              writer = csv.writer(output, quoting=csv.QUOTE_NONE, escapechar=' ')
+
+              line = [bom[1] + ',' + bom[2]]
+              writer.writerow(line)
+          
+              line = ['PART NO, DESCRIPTION, QTY REQ, QTY STOCK, TO ORDER, CCT Loc']
+              writer.writerow(line)
+      
+      
+              for row in result:
+                  req = float(row[2])*int(qty)
+                  req = round(req,2)
+                  part = cur.execute(f"SELECT * FROM `parts` WHERE PART_NO = '{row[0]}';").fetchone()
+                  print(part)
+                  stock = float(part[7])
+                  stock = round(stock,2)
+                  if stock < req:
+                    order = req - stock
+                  else:
+                    order = 0
+                  order = round(order,2)
+                  line = [ row[0] + ',' + row[1].replace(',',' ') + ',' + str(req) + ',' + str(stock) + ',' + str(order) + ',' + row[3].replace(',',' ')]
+                  writer.writerow(line)
+      
+              output.seek(0)
+          
+              return Response(output, mimetype="text/csv", headers={"Content-Disposition":"attachment;filename=bom_report.csv"})
+          except Exception as e:
+              print(e)
+          finally:
+              pass   
+    
+    
+    
+    return render_template("boms.html",form=form)
 
 @app.route('/add_bom')
 def add_bom():
@@ -185,6 +252,40 @@ def rem_bom():
 @app.route('/')
 def index():
     return render_template("main.html")
+    
+@app.route('/download/report/csv')
+def download_report():
+    try:
+#		conn = mysql.connect()
+#		cursor = conn.cursor(pymysql.cursors.DictCursor)
+        cur = get_db().cursor()
+		
+        cur.execute("SELECT BOM, PART_NO, DESCRIPTION, QTY_USED, CCTLOC FROM `bom_items` WHERE BOM = 402;")
+        result = cur.fetchall()
+        print(result)
+
+        output = io.StringIO()
+        writer = csv.writer(output, quoting=csv.QUOTE_NONE, escapechar=' ')
+#        writer = csv.writer(output)
+		
+        line = ['BOM, PART_NO, DESCRIPTION, QTY_USED, CCT Loc']
+        writer.writerow(line)
+
+
+        for row in result:
+            line = [str(row[0]) + ',' + row[1] + ',' + row[2].replace(',',' ') + ',' + row[3]+ ',' + row[4].replace(',',' ')]
+#            line = [str(row['BOM']) + ',' + row['PART_NO'] + ',' +'"' + row['DESCRIPTION'] +'"' + ',' + row['QTY_USED']+ ',' + row['CCTLOC']]
+            writer.writerow(line)
+
+        output.seek(0)
+		
+        return Response(output, mimetype="text/csv", headers={"Content-Disposition":"attachment;filename=bom_report.csv"})
+    except Exception as e:
+        print(e)
+    finally:
+#		cursor.close() 
+#		conn.close()
+        pass
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5007, debug=True, use_reloader=False )

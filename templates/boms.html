@@ -1,5 +1,36 @@
 {% extends "bom_top.html" %}
 {% block content %}
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <script type="text/javascript" src="{{url_for('static', filename='jquery-3.5.1.min.js')}}"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
+</head>
+
+<body>
+   <form method="POST" novalidate>    
+   {{ form.autocomp_bom.label }}: {{ form.autocomp_bom }} {{ form.qty_bom.label }}: {{ form.qty_bom }} {{form.submit()}}
+   </form>
+   <hr>
+
 	  <h1>BOMs</h1>
- 
+
+	     <a href='{{ url_for("download_report") }}'>Generate CSV Report</a>
+
+<script>
+    $(function(){
+        $.ajax({
+            url: '{{ url_for("autocomplete_bom") }}'
+            }).done(function (data){
+                $('#bom_autocomplete').autocomplete({
+                    source: data,
+                    minLength: 2,
+                    autoFocus: true
+                });
+            });
+        });
+
+</script>
+
+</body> 
 {% endblock %}
